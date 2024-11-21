@@ -6,14 +6,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.security.Principal;
 
-public class BankAccountServiceProxy extends BankAccountServiceImpl{
+public class BankAccountServiceProxy implements BankAccountService{
+
+    final BankAccountService delegate;
+
+    public BankAccountServiceProxy(BankAccountService delegate) {
+        this.delegate = delegate;
+    }
 
     @Override
-    public BankAccount findById(long id) {
-        BankAccount account = super.findById(id);
+    public BankAccount getById(long id) {
 
-        // we put the logic in here
-            // Note that spring security will do this for you - generate the proxy automatically - classed based proxy - CGLIB
+        BankAccount account  = delegate.getById(id);
+
         Principal principal = SecurityContextHolder.getContext().getAuthentication();
         if(!principal.getName().equals(account.getOwner())){
             throw new AuthorizationDeniedException("Denied", new AuthorizationDecision(false));
@@ -21,4 +26,17 @@ public class BankAccountServiceProxy extends BankAccountServiceImpl{
 
         return account;
     }
+
+    @Override
+    public BankAccount findById(long id) {
+        BankAccount account = delegate.findById(id);
+
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+        if(!principal.getName().equals(account.getOwner())){
+            throw new AuthorizationDeniedException("Denied", new AuthorizationDecision(false));
+        }
+
+        return account;
+    }
+
 }

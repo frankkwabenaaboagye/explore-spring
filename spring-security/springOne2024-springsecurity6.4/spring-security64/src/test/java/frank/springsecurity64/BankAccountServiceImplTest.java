@@ -11,7 +11,10 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class BankAccountServiceImplTest {
 
-    BankAccountServiceImpl account = new BankAccountServiceProxy();
+    BankAccountService account = new BankAccountServiceProxy(new BankAccountServiceImpl());
+
+    // this fails because, now the proxy is an instance of the interface and not the class ::: BankAccountServiceImpl account = new BankAccountServiceProxy(new BankAccountServiceImpl());
+
 
     void login(String user){
         Authentication auth = new TestingAuthenticationToken(user, "password", "ROLE_USER");

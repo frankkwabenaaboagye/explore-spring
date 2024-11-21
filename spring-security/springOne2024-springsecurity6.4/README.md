@@ -151,6 +151,8 @@ public class BankAccountServiceProxy extends BankAccountServiceImpl{
 }
 
 // tests remain the same
+
+// Note that we only overode the findById
 ```
 
 - From the above the 2 tests passes and two fails just like before
@@ -166,4 +168,89 @@ class BankAccountServiceImplTest {
     // TESTs passed now
 }
 
+// we we test the getByID, it uses the proxy; since that was overriden
+
+```
+
+- Now!! interface based proxy
+
+- If the `BankAccountServiceImpl` was to have the `final` keyword
+    - in the proxy, we cannot extend it anymore
+    - and spring security too will have the same limitation, it can't extend the final class
+    - what you can do is to extract out an interface
+
+```java
+
+public interface BankAccountService {
+    BankAccount findById(long id);
+
+    BankAccount getById(long id);
+}
+
+//---
+
+public class BankAccountServiceImpl implements BankAccountService {
+
+    @Override
+    public BankAccount findById(long id) {
+        BankAccount account = new BankAccount(id, "Frank", "4990028101", 10000);
+
+        return account;
+    }
+
+    @Override
+    public BankAccount getById(long id) {
+        return findById(id);
+    }
+}
+
+
+// --
+
+
+public class BankAccountServiceProxy implements BankAccountService{
+
+    final BankAccountService delegate;
+
+    public BankAccountServiceProxy(BankAccountService delegate) {
+        this.delegate = delegate;
+    }
+
+    @Override
+    public BankAccount getById(long id) {
+
+        BankAccount account  = delegate.getById(id);
+
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+        if(!principal.getName().equals(account.getOwner())){
+            throw new AuthorizationDeniedException("Denied", new AuthorizationDecision(false));
+        }
+
+        return account;
+    }
+
+    @Override
+    public BankAccount findById(long id) {
+        BankAccount account = delegate.findById(id);
+
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+        if(!principal.getName().equals(account.getOwner())){
+            throw new AuthorizationDeniedException("Denied", new AuthorizationDecision(false));
+        }
+
+        return account;
+    }
+
+}
+
+//--
+
+class BankAccountServiceImplTest {
+
+    BankAccountService account = new BankAccountServiceProxy(new BankAccountServiceImpl());
+
+    // this fails because, now the proxy is an instance of the interface and not the class ::: BankAccountServiceImpl account = new BankAccountServiceProxy(new BankAccountServiceImpl());
+
+    //... rest of the test code remains the same
+}
 ```
