@@ -1,0 +1,70 @@
+# General
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.log
+*.swp
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Maven
+target/
+*.jar
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+gradle-wrapper.log
+
+# OS-Specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+*.orig
+
+# Test reports
+test-results/
+surefire-reports/
+.coverage/
+
+# Spring Boot
+*.spring-boot-devtools.properties
+.env
+
+# Java-specific
+*.class
+*.jar
+*.war
+hs_err_pid*
+
+# Ignore sensitive files
+application.properties
+application.yml
+application-*.properties
+application-*.yml
+
+# Other IDEs/Editors
+.vscode/
+*.code-workspace
