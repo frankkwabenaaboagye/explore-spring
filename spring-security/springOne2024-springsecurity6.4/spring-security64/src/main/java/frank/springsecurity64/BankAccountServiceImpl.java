@@ -11,7 +11,6 @@ public class BankAccountServiceImpl {
     public BankAccount findById(long id) {
         BankAccount account = new BankAccount(id, "Frank", "4990028101", 10000);
 
-
         return account;
     }
 

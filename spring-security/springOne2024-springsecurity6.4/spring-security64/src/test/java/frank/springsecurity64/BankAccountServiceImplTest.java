@@ -51,5 +51,4 @@ class BankAccountServiceImplTest {
         assertThatExceptionOfType(AuthorizationDeniedException.class)
                 .isThrownBy(()->this.account.getById(1));
     }
-
 }
