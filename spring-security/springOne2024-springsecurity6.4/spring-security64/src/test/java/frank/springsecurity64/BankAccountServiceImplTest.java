@@ -37,7 +37,6 @@ class BankAccountServiceImplTest {
         this.account.getById(1);
     }
 
-
     // so Ben should not be able to access the findById & getById
     @Test
     void findByIdWhenDenied(){
