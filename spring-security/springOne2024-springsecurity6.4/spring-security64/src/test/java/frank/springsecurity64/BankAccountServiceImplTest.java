@@ -1,56 +1,40 @@
 package frank.springsecurity64;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authorization.AuthorizationDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+@SpringBootTest
 class BankAccountServiceImplTest {
 
     BankAccountService account = new BankAccountServiceProxy(new BankAccountServiceImpl());
 
-    // this fails because, now the proxy is an instance of the interface and not the class ::: BankAccountServiceImpl account = new BankAccountServiceProxy(new BankAccountServiceImpl());
-
-
-    void login(String user){
-        Authentication auth = new TestingAuthenticationToken(user, "password", "ROLE_USER");
-        SecurityContextHolder.getContext().setAuthentication(auth);
-    }
-
-    // clean up
-    @AfterEach
-    void cleanUp(){
-        SecurityContextHolder.clearContext();
-    }
 
     @Test
+    @WithMockUser("Frank")
     void findByIdWhenGranted(){
-        // since our account always belong to Frank, we want to log in as such
-        login("Frank");
         this.account.findById(1);
     }
 
     @Test
+    @WithMockUser("Frank")
     void getByIdWhenGranted(){
-        login("Frank");
         this.account.getById(1);
     }
 
-    // so Ben should not be able to access the findById & getById
     @Test
+    @WithMockUser("Ben")
     void findByIdWhenDenied(){
-        login("Ben");
         assertThatExceptionOfType(AuthorizationDeniedException.class)
                 .isThrownBy(()->this.account.findById(1));
     }
 
     @Test
+    @WithMockUser("Ben")
     void getByIdWhenDenied(){
-        login("Ben");
         assertThatExceptionOfType(AuthorizationDeniedException.class)
                 .isThrownBy(()->this.account.getById(1));
     }

@@ -254,3 +254,40 @@ class BankAccountServiceImplTest {
     //... rest of the test code remains the same
 }
 ```
+
+- Tests passed!!
+
+---
+
+- But lets clean up test as well as use some build in features of spring security
+    -  with some best pratices
+
+- We take off the maual login  and the clean up
+- add `@SpringBootTest`
+- add the `@WithMockerUser()`
+- Note
+    - this is all we have to do to login and clean up the context afterward
+
+```java
+
+
+
+@SpringBootTest
+class BankAccountServiceImplTest {
+
+    BankAccountService account = new BankAccountServiceProxy(new BankAccountServiceImpl());
+
+
+    @Test
+    @WithMockUser("Frank")
+    void findByIdWhenGranted(){
+        this.account.findById(1);
+    }
+
+    //.... continue
+
+
+}
+
+
+```
