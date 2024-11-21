@@ -15,5 +15,6 @@
     - Method security focused
 
 
-- Create a bank account object
-- create a bank account service  (domain logic is not really important)
+- bank account object, create a bank account service  (domain logic is not really important)
+- create test for the bank account service
+- 
