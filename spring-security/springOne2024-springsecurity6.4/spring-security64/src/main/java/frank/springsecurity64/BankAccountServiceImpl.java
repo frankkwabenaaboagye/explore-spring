@@ -1,9 +1,23 @@
 package frank.springsecurity64;
 
+import org.springframework.security.authorization.AuthorizationDecision;
+import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.security.Principal;
+
 public class BankAccountServiceImpl {
 
     public BankAccount findById(long id) {
-        return new BankAccount(id, "Frank", "4990028101", 10000);
+        BankAccount account = new BankAccount(id, "Frank", "4990028101", 10000);
+
+        // the security context holder contains the current authentication
+            // so say, doing security manually
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+        if(!principal.getName().equals(account.getOwner())){
+            throw new AuthorizationDeniedException("Denied", new AuthorizationDecision(false));
+        }
+        return account;
     }
 
     public BankAccount getById(long id) {
