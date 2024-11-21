@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class BankAccountServiceImplTest {
 
-    BankAccountServiceImpl account = new BankAccountServiceImpl();
+    BankAccountServiceImpl account = new BankAccountServiceProxy();
 
     void login(String user){
         Authentication auth = new TestingAuthenticationToken(user, "password", "ROLE_USER");

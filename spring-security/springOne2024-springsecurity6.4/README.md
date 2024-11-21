@@ -119,4 +119,51 @@ public class BankAccountServiceImpl {
 
 ```java
 
+public class BankAccountServiceImpl {
+
+    public BankAccount findById(long id) {
+        BankAccount account = new BankAccount(id, "Frank", "4990028101", 10000);
+
+        return account;
+    }
+
+    public BankAccount getById(long id) {
+        return findById(id);
+    }
+}
+
+
+public class BankAccountServiceProxy extends BankAccountServiceImpl{
+
+    @Override
+    public BankAccount findById(long id) {
+        BankAccount account = super.findById(id);
+
+        // we put the logic in here
+            // Note that spring security will do this for you - generate the proxy automatically - classed based proxy - CGLIB
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+        if(!principal.getName().equals(account.getOwner())){
+            throw new AuthorizationDeniedException("Denied", new AuthorizationDecision(false));
+        }
+
+        return account;
+    }
+}
+
+// tests remain the same
+```
+
+- From the above the 2 tests passes and two fails just like before
+- For all the tests to pass
+
+```java
+
+class BankAccountServiceImplTest {
+
+    BankAccountServiceImpl account = new BankAccountServiceProxy();  // moved from BankAccountServiceImpl();
+
+    //... rest of the test remain the same
+    // TESTs passed now
+}
+
 ```
