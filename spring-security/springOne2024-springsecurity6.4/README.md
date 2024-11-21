@@ -284,10 +284,92 @@ class BankAccountServiceImplTest {
         this.account.findById(1);
     }
 
-    //.... continue
+    @Test
+    @WithMockUser("Frank")
+    void getByIdWhenGranted(){
+        this.account.getById(1);
+    }
 
+    @Test
+    @WithMockUser("Ben")
+    void findByIdWhenDenied(){
+        assertThatExceptionOfType(AuthorizationDeniedException.class)
+                .isThrownBy(()->this.account.findById(1));
+    }
 
+    @Test
+    @WithMockUser("Ben")
+    void getByIdWhenDenied(){
+        assertThatExceptionOfType(AuthorizationDeniedException.class)
+                .isThrownBy(()->this.account.getById(1));
+    }
 }
 
+// TEST passed!!!
+
+```
+
+
+---
+
+- but you will also note that we are duplicating
+    - "Frank" and "Ben"
+
+- using another approach
+
+
+```java
+
+// we need the annotation to show up at runtime
+@Retention(RetentionPolicy.RUNTIME)
+// we take off the annotation from the test class itself and bring it here
+@WithMockUser("Frank")
+public @interface WithMockFrank {
+}
+
+//---
+
+
+@Retention(RetentionPolicy.RUNTIME)
+@WithMockUser("Ben")
+public @interface WithMockBen {
+}
+
+
+// note that, these users do not exist in your database - we are mocking
+
+
+@SpringBootTest
+class BankAccountServiceImplTest {
+
+    BankAccountService account = new BankAccountServiceProxy(new BankAccountServiceImpl());
+
+
+    @Test
+    @WithMockFrank
+    void findByIdWhenGranted(){
+        this.account.findById(1);
+    }
+
+    @Test
+    @WithMockFrank
+    void getByIdWhenGranted(){
+        this.account.getById(1);
+    }
+
+    @Test
+    @WithMockBen
+    void findByIdWhenDenied(){
+        assertThatExceptionOfType(AuthorizationDeniedException.class)
+                .isThrownBy(()->this.account.findById(1));
+    }
+
+    @Test
+    @WithMockBen
+    void getByIdWhenDenied(){
+        assertThatExceptionOfType(AuthorizationDeniedException.class)
+                .isThrownBy(()->this.account.getById(1));
+    }
+}
 
 ```

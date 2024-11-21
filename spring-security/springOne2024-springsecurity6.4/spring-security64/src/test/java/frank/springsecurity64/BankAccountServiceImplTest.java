@@ -3,7 +3,6 @@ package frank.springsecurity64;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authorization.AuthorizationDeniedException;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -14,26 +13,26 @@ class BankAccountServiceImplTest {
 
 
     @Test
-    @WithMockUser("Frank")
+    @WithMockFrank
     void findByIdWhenGranted(){
         this.account.findById(1);
     }
 
     @Test
-    @WithMockUser("Frank")
+    @WithMockFrank
     void getByIdWhenGranted(){
         this.account.getById(1);
     }
 
     @Test
-    @WithMockUser("Ben")
+    @WithMockBen
     void findByIdWhenDenied(){
         assertThatExceptionOfType(AuthorizationDeniedException.class)
                 .isThrownBy(()->this.account.findById(1));
     }
 
     @Test
-    @WithMockUser("Ben")
+    @WithMockBen
     void getByIdWhenDenied(){
         assertThatExceptionOfType(AuthorizationDeniedException.class)
                 .isThrownBy(()->this.account.getById(1));
