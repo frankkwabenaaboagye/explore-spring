@@ -11,12 +11,7 @@ public class BankAccountServiceImpl {
     public BankAccount findById(long id) {
         BankAccount account = new BankAccount(id, "Frank", "4990028101", 10000);
 
-        // the security context holder contains the current authentication
-            // so say, doing security manually
-        Principal principal = SecurityContextHolder.getContext().getAuthentication();
-        if(!principal.getName().equals(account.getOwner())){
-            throw new AuthorizationDeniedException("Denied", new AuthorizationDecision(false));
-        }
+
         return account;
     }
 

@@ -106,3 +106,17 @@ public class BankAccountServiceImpl {
 }
 
 ```
+
+- But there are couple of things
+    - there is a lot of work done to log the user in. - a lot done manually
+    - also we are mixing the domain logic with the `BankAccountServiceImpl` with the authorization
+    - we utilise spring security here.
+        - lets do it by manually creating a proxy [a thing that acts on behalf of another]
+            - creating a proxy object manually - `BankAccountServiceProxy`
+            - so the `BankAccountServiceProxy` is an instance of the `BankAccountServiceImpl`  ::: A class based proxy
+            - we are going to do the authorization in the proxy
+
+
+```java
+
+```
