@@ -1,5 +1,5 @@
 # Exploring Spring
-Welcome to the Exploring Spring repository! 🎉
+Welcome to the Exploring Spring repository! 🎉🎉
 
 Its is a collection of some learnings, experiments, and notes as I explore the Spring ecosystem. 
 
