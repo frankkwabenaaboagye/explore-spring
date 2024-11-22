@@ -18,6 +18,13 @@ class BankAccountServiceImplTest {
 
 
     @Test
+    @WithMockAccountant
+    void findByIdWhenAccountant(){
+        this.account.findById(1);
+    }
+
+
+    @Test
     @WithMockFrank
     void findByIdWhenGranted(){
         this.account.findById(1);
