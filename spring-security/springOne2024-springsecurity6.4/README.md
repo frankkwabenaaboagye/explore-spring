@@ -437,6 +437,11 @@ public interface BankAccountService {
 
 ```java
 
+@PostAuthorize("returnObject?.owner == authentication?.name")
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PostReadBankAccount {
+}
+
 ```
 
 
