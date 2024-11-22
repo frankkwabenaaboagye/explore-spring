@@ -372,4 +372,65 @@ class BankAccountServiceImplTest {
     }
 }
 
+// TEST passed
 ```
+
+- Advantages of this is that:
+    - if makes it really easy to change something about say ,"Frank", because it is centralised
+
+---
+
+- how can we still clean up the authorization logic?
+- note that we are creating the proxies manually - but we dont have to do that 
+- lets use spring security support
+
+- `@PostAuthorize` : after the method is invoked, i want to do some authorisation logic
+
+```java
+
+/*
+you will notice that in the hardcoded proxy, after we get the account object we do some
+checks right?
+
+// we follow that pattern here
+
+
+// **returnObject** is a keyword for the BankAccount Object
+// we add "?" for null check
+
+
+*/
+
+public interface BankAccountService {
+
+    @PostAuthorize("returnObject?.owner == authentication?.name")
+    BankAccount findById(long id);
+
+    @PostAuthorize("returnObject?.owner == authentication?.name")
+    BankAccount getById(long id);
+}
+
+
+
+```
+
+- working on Enable method security
+
+- lets use spring security
+    - manually creating it first - spring security can do this authomatically
+
+```java
+
+// moving from 
+// BankAccountService account = new BankAccountServiceProxy(new BankAccountServiceImpl());
+// to
+
+// this is how enable method security does 
+// create an instance of the APF
+    AuthorizationProxyFactory factory = AuthorizationAdvisorProxyFactory.withDefaults();
+    BankAccountService account = (BankAccountService) factory.proxy (new BankAccountServiceImpl());
+
+
+```
+
+

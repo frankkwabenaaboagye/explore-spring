@@ -3,13 +3,18 @@ package frank.springsecurity64;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.authorization.AuthorizationProxyFactory;
+import org.springframework.security.authorization.method.AuthorizationAdvisorProxyFactory;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @SpringBootTest
 class BankAccountServiceImplTest {
 
-    BankAccountService account = new BankAccountServiceProxy(new BankAccountServiceImpl());
+    // create an instance of the APF
+    AuthorizationProxyFactory factory = AuthorizationAdvisorProxyFactory.withDefaults();
+
+    BankAccountService account = (BankAccountService) factory.proxy (new BankAccountServiceImpl());
 
 
     @Test
