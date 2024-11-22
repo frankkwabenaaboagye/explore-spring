@@ -433,4 +433,10 @@ public interface BankAccountService {
 
 ```
 
+- we can takeout the duplicates using the same anotation approach
+
+```java
+
+```
+
 
