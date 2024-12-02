@@ -676,3 +676,63 @@ public String getAccountNumber() {
 // when we run the test it should work
 
 ```
+
+---
+
+- lets do another interesting thing
+
+- we add more methods to our service
+    - they are going to be `default` cos we don't care about the implementation, we only want to see our security in action 
+
+
+
+```java
+
+public interface BankAccountService {
+
+    @PostReadBankAccount
+    BankAccount findById(long id);
+
+    @PostReadBankAccount
+    BankAccount getById(long id);
+
+// we added these two
+    default void saveBankAccount(BankAccount bankAccountToSave) {}
+
+    default void updateBankAccount(BankAccount bankAccountToUpdate) {}
+}
+
+
+
+// added these tests
+
+
+@Test
+@WithMockFrank
+void updateAccountWhenGranted(){
+    BankAccount bankAccount = new BankAccount(1, "Frank", "4990028101", 10000);
+    this.account.updateBankAccount(bankAccount);
+}
+
+@Test
+@WithMockBen
+void updateAccountWhenDenied(){
+    BankAccount bankAccount = new BankAccount(1, "Frank", "4990028101", 10000);
+    assertThatExceptionOfType(AuthorizationDeniedException.class)
+            .isThrownBy(() -> this.account.updateBankAccount(bankAccount));
+}
+
+
+// we change the service
+    // we check the variable before we save .. we use # to refer to the variable
+@PreAuthorize("#bankAccountToSave?.owner == authentication?.name") // we add this
+default void saveBankAccount(BankAccount bankAccountToSave) {}
+
+@PreAuthorize("#bankAccountToUpdate?.owner == authentication?.name") // we add this
+default void updateBankAccount(BankAccount bankAccountToUpdate) {}
+
+```
+
+- test passed now
+
+

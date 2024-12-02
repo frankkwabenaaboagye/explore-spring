@@ -15,6 +15,7 @@ class BankAccountServiceImplTest {
     BankAccountService account;
 
 
+
     @Test
     @WithMockAccountant
     void findByIdWhenAccountant(){
@@ -41,6 +42,26 @@ class BankAccountServiceImplTest {
         BankAccount account = this.account.getById(1);
         assertThat(account.getAccountNumber()).isEqualTo("4990028101"); // 4990028101 is the account number we hard-coded
     }
+
+
+
+    @Test
+    @WithMockFrank
+    void updateAccountWhenGranted(){
+        BankAccount bankAccount = new BankAccount(1, "Frank", "4990028101", 10000);
+        this.account.updateBankAccount(bankAccount);
+    }
+
+
+    @Test
+    @WithMockBen
+    void updateAccountWhenDenied(){
+        BankAccount bankAccount = new BankAccount(1, "Frank", "4990028101", 10000);
+
+        assertThatExceptionOfType(AuthorizationDeniedException.class)
+                .isThrownBy(() -> this.account.updateBankAccount(bankAccount));
+    }
+
 
 
     @Test
