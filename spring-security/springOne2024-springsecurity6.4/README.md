@@ -476,4 +476,106 @@ public @interface WithMockAccountant {
 
 ```
 
+---
+
+- what if we don't want the accountant to get the account number
+- they should only be able to see the balance
+
+
+```java
+
+@Test
+@WithMockAccountant
+void getAccountNumberWhenAccountant(){
+    BankAccount account = this.account.getById(1);
+    assertThatExceptionOfType(
+            AuthorizationDeniedException.class
+    ).isThrownBy(() -> account.getAccountNumber());
+}
+
+
+```
+
+- but can I go into the `getAccountNumber` and do this?
+
+```java
+
+@PreAuthorize("this.owner == authentication.name")
+public String getAccountNumber() {
+    return accountNumber;
+}
+
+// this is going to work
+```
+
+- the above is not going to work
+    - cos object is not being proxied
+
+- we have to change this ... look at the `getById`, it infers from `findById` and it uses
+    - `new BankAccount(....)`
+
+```java
+
+@Override
+public BankAccount findById(long id) {
+    BankAccount account = new BankAccount(id, "Frank", "4990028101", 10000);
+
+    return account;
+}
+
+@Override
+public BankAccount getById(long id) {
+    return findById(id);
+}
+
+```
+
+- so to resolve this, we can go with the  how we did this
+
+```java
+
+// create an instance of the APF
+    AuthorizationProxyFactory factory = AuthorizationAdvisorProxyFactory.withDefaults();
+    BankAccountService account = (BankAccountService) factory.proxy (new BankAccountServiceImpl());
+
+// we do the above for the BankAccount7
+// but that will be mixixng business logic with authorisation logic
+
+```
+
+- we can address it
+- since our service looks like
+
+```java
+
+@PreAuthorize("this.owner == authentication.name") // we add this in the BankAccount class
+public String getAccountNumber() {
+    return accountNumber;
+}
+
+
+@PostReadBankAccount
+BankAccount getById(long id);
+
+
+// view the PostReadBankAccount we created
+@PostAuthorize("returnObject?.owner == authentication?.name or hasRole('ACCOUNTANT')")
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PostReadBankAccount {
+}
+
+
+
+// we can tweak it a little
+@PostAuthorize("returnObject?.owner == authentication?.name or hasRole('ACCOUNTANT')")
+@AuthorizeReturnObject  // this is what we added
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PostReadBankAccount {
+}
+
+
+// spring security is using that factory automatically on the BankAccountService, 
+// to the make the BankAccount (the return object), a proxy
+
+```
 

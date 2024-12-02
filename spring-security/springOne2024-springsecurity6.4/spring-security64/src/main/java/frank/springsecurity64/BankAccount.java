@@ -1,5 +1,7 @@
 package frank.springsecurity64;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 public class BankAccount {
 
     public BankAccount(long id, String owner, String accountNumber, double balance) {
@@ -19,6 +21,7 @@ public class BankAccount {
         return owner;
     }
 
+    @PreAuthorize("this.owner == authentication.name")
     public String getAccountNumber() {
         return accountNumber;
     }

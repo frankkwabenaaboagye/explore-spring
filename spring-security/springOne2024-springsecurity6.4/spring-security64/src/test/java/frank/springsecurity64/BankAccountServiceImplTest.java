@@ -29,6 +29,15 @@ class BankAccountServiceImplTest {
         this.account.getById(1);
     }
 
+    @Test
+    @WithMockAccountant
+    void getAccountNumberWhenAccountant(){
+        BankAccount account = this.account.getById(1);
+        assertThatExceptionOfType(
+                AuthorizationDeniedException.class
+        ).isThrownBy(() -> account.getAccountNumber());
+    }
+
 
     @Test
     @WithMockFrank
