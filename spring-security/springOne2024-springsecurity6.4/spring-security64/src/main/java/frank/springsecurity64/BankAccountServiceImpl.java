@@ -1,5 +1,8 @@
 package frank.springsecurity64;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class BankAccountServiceImpl implements BankAccountService {
 
     @Override

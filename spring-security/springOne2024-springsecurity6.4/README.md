@@ -579,3 +579,54 @@ public @interface PostReadBankAccount {
 
 ```
 
+- so this is important to note
+    - A spring bean can have method security
+    - Objects returned from the Spring Bean can also have method security
+
+- now lets clean it up
+    - since we are manually using proxy here
+
+```java
+
+    AuthorizationProxyFactory factory = AuthorizationAdvisorProxyFactory.withDefaults();
+
+    BankAccountService account = (BankAccountService) factory.proxy (new BankAccountServiceImpl());
+
+```
+
+- cleaned up version
+
+```java
+
+// Autowired
+
+@SpringBootTest
+class BankAccountServiceImplTest {
+
+    @Autowired
+    BankAccountService account;
+
+    ...
+    ...
+
+}
+
+
+// make the service a spring bean with @Service annotation
+
+@Service
+public class BankAccountServiceImpl implements BankAccountService {
+
+    ...
+    ...
+}
+
+
+//enable method security
+@SpringBootApplication
+@EnableMethodSecurity
+public class SpringSecurity64Application {
+    ...
+    ...
+}
+```
