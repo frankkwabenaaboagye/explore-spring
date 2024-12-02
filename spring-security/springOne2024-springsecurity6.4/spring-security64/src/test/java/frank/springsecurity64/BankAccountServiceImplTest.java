@@ -23,6 +23,12 @@ class BankAccountServiceImplTest {
         this.account.findById(1);
     }
 
+    @Test
+    @WithMockAccountant
+    void getByIdWhenAccountant(){
+        this.account.getById(1);
+    }
+
 
     @Test
     @WithMockFrank
