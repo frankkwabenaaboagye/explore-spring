@@ -450,3 +450,30 @@ public @interface PostReadBankAccount {
     - adding a new test to allow an accountant to access the bank account
 
 
+```java
+
+// the test
+@Test
+@WithMockAccountant
+void findByIdWhenAccountant(){
+    this.account.findById(1);
+}
+
+// now lets give the permissions
+// check the SecurityExpressionRoot to follow on the stuffs like the hasRole, authentication and others
+@PostAuthorize("returnObject?.owner == authentication?.name or hasRole('ACCOUNTANT')")
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PostReadBankAccount {
+}
+
+
+// note that we already have this
+@Retention(RetentionPolicy.RUNTIME)
+@WithMockUser(roles = "ACCOUNTANT")
+public @interface WithMockAccountant {
+}
+
+
+```
+
+
