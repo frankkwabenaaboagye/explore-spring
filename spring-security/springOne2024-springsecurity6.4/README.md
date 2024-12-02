@@ -735,4 +735,56 @@ default void updateBankAccount(BankAccount bankAccountToUpdate) {}
 
 - test passed now
 
+- but we can make it better by getting rid  of the redunduncy
+    - notice that, here the vaiables are different `bankAccountToSave` and `bankAccountToUpdate`
+    - create annotation just like the `PostReadBankAccount`
+
+```java
+
+// we can do this
+@Retention(RetentionPolicy.RUNTIME)
+@PreAuthorize("#bankAccountToUpdate?.owner == authentication?.name")
+public @interface PreWriteBankAccount {
+}
+
+// but notice that =, then it will refer to only one variable
+
+// so use template
+
+
+@Retention(RetentionPolicy.RUNTIME)
+@PreAuthorize("{theVariable}?.owner == authentication?.name")
+public @interface PreWriteBankAccount {
+    String theVariable();
+
+    // String theVariable() default ""; // you can use this for default / if you have a default
+    // String value(); // some uses "value", but it doesn't matter
+}
+
+
+// then we change what is in out service
+@PreWriteBankAccount(theVariable = "#bankAccountToSave")
+default void saveBankAccount(BankAccount bankAccountToSave) {}
+
+@PreWriteBankAccount(theVariable = "#bankAccountToUpdate")
+default void updateBankAccount(BankAccount bankAccountToUpdate) {}
+
+// it should work fine
+// but maybe some people already have this structure in the code
+// so just expose a bean of type PrePostTemplateDefaults
+
+// this will enable it
+@Bean
+PrePostTemplateDefaults prePostTemplateDefaults() {
+    return new PrePostTemplateDefaults();
+}
+
+```
+
+
+---
+
+
+- we want to see it in a real world application
+
 

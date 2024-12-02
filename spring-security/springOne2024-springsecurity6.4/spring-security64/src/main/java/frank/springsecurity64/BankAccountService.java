@@ -10,9 +10,9 @@ public interface BankAccountService {
     @PostReadBankAccount
     BankAccount getById(long id);
 
-    @PreAuthorize("#bankAccountToSave?.owner == authentication?.name")
+    @PreWriteBankAccount(theVariable = "#bankAccountToSave")
     default void saveBankAccount(BankAccount bankAccountToSave) {}
 
-    @PreAuthorize("#bankAccountToUpdate?.owner == authentication?.name")
+    @PreWriteBankAccount(theVariable = "#bankAccountToUpdate")
     default void updateBankAccount(BankAccount bankAccountToUpdate) {}
 }
