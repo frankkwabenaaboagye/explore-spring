@@ -4,10 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authorization.AuthorizationDeniedException;
-import org.springframework.security.authorization.AuthorizationProxyFactory;
-import org.springframework.security.authorization.method.AuthorizationAdvisorProxyFactory;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 class BankAccountServiceImplTest {
@@ -32,9 +31,15 @@ class BankAccountServiceImplTest {
     @WithMockAccountant
     void getAccountNumberWhenAccountant(){
         BankAccount account = this.account.getById(1);
-        assertThatExceptionOfType(
-                AuthorizationDeniedException.class
-        ).isThrownBy(() -> account.getAccountNumber());
+        assertThat(account.getAccountNumber()).isEqualTo("**-**");
+    }
+
+
+    @Test
+    @WithMockFrank
+    void getAccountNumberWhenFrank(){
+        BankAccount account = this.account.getById(1);
+        assertThat(account.getAccountNumber()).isEqualTo("4990028101"); // 4990028101 is the account number we hard-coded
     }
 
 

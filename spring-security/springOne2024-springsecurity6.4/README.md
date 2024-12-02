@@ -630,3 +630,49 @@ public class SpringSecurity64Application {
     ...
 }
 ```
+
+- what is we don't want the ` assertThatExceptionOfType(AuthorizationDeniedException.class)` all over in the test
+- we can do something about it, even customise it
+    - the way to go about it say, using  a mask
+
+
+```java
+
+@Test
+@WithMockAccountant
+void getAccountNumberWhenAccountant(){
+    BankAccount account = this.account.getById(1);
+    assertThat(account.getAccountNumber()).isEqualTo("**-**");
+     // this is saying that If I am invoking the getAccountNumber and I am not allowed to do it, I want it to be masked
+}
+
+
+@Test
+@WithMockFrank
+void getAccountNumberWhenFrank(){
+    BankAccount account = this.account.getById(1);
+    assertThat(account.getAccountNumber()).isEqualTo("4990028101"); // 4990028101 is the account number we hard-coded
+}
+
+
+// we add a new class, we make it a spring bean, it implements MethosAuthorizationDeniedHandler
+
+@Component
+public class MaskAuthorizationDeniedHandler implements MethodAuthorizationDeniedHandler {
+    @Override
+    public Object handleDeniedInvocation(MethodInvocation methodInvocation, AuthorizationResult authorizationResult) {
+        return "**-**";
+    }
+}
+
+// now modify the BankAccount Object
+@PreAuthorize("this.owner == authentication.name")
+@HandleAuthorizationDenied(handlerClass = MaskAuthorizationDeniedHandler.class) // we add this
+public String getAccountNumber() {
+    return accountNumber;
+}
+
+
+// when we run the test it should work
+
+```
