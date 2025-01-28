@@ -22,3 +22,55 @@
 ### Implementing
 - notice that we needed a UserDetailsService
 - so for a user in the application, implement the UserDetailsService
+
+- One can define a user say AppUser and extend the `User` from spring security
+
+## Creating the JWT filter
+- we want this to fire anytime there is a request
+ - extends the `OncePerRequestFilter` or one cna simply use `filter`
+
+```java
+
+// the parameters should not be null
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+    }
+}
+
+
+@Component  // making it a spring managed bean
+@RequiredArgsConstructor  // any final field would be in the constructor
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    @Override
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+
+    }
+}
+
+```
+
+- we check for the JWT TOKEN
+- it should be in the header called - Authorization
+- Bearer token always starts with "Bearer .."
+- if the auth-header is null or does not start with "Bearer ", just pass on to the next filter and make an early return
+- extract out the jwt after the "Bearer "
+- use the JWT service (you create it) to extract the username (what you  defined as the subject)
+
+## Creating the JWT service
+- we need a couple of dependencies
+- `jjwt-api`,  `jjwt-impl`, `jjwt-jackson` from the groupId `io.jsonwebtoken`
+- visit [https://jwt.io/](https://jwt.io/)
+- we need a method to get all the claims
+    - and one to get what we want
+    - we will use the `Jwts` to extract the claims
+
+### Understanding JWT
+- JWT - json web token : claims to be transfered between different parties
+    - we have the 
+        - header
+        - payload
+        - signature
+- note that we have a sign in key (256 in size) that is used to sign the token
+    - that is the signature part of the JWT
