@@ -1,5 +1,6 @@
 package frank.app.socialmedia.config;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // validate the jwt
         String userEmail = jwtService.extractUsername(jwt);// this will be the email in our case
+        // or we can use this
+        // String theUserEmail = jwtService.extractClaimWithResolver(jwt, Claims::getSubject);
+
 
         // if the username has been extracted but the person is not already authenticated
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){

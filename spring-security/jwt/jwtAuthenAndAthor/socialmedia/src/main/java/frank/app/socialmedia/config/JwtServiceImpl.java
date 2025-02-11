@@ -100,7 +100,7 @@ public class JwtServiceImpl implements JwtService{
             boolean isUsernameValid = tokenUsername.equals(userDetails.getUsername());
 
             Date tokenExpiration = extractExpiration(theJwt);
-            boolean isTokenExpired = tokenExpiration.before(new Date());
+            boolean isTokenExpired = tokenExpiration.before(appUtils.getCurrentDate());
 
             return isUsernameValid && !isTokenExpired;
         } catch (Exception e){

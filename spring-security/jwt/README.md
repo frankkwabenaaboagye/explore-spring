@@ -66,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     - and one to get what we want
     - we will use the `Jwts` to extract the claims
 
-### Understanding JWT
+#### Understanding JWT
 - JWT - json web token : claims to be transfered between different parties
     - we have the 
         - header
@@ -74,3 +74,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         - signature
 - note that we have a sign in key (256 in size) that is used to sign the token
     - that is the signature part of the JWT
+
+#### Other things about the JWT 
+- it should be checking stuffs like
+    - isTokenValid()
+    - generateToken()
+    - extractClaims() / or even specific claims (like subject, e.t.c)
