@@ -25,6 +25,8 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegistrationRequest registrationRequest) {
 
+        checkIfUserExists(registrationRequest.getEmail());
+
         SocialMediaUser user = SocialMediaUser.builder()
                 .firstname(registrationRequest.getFirstname())
                 .lastname(registrationRequest.getLastname())
@@ -40,6 +42,7 @@ public class AuthenticationService {
                 .build();
 
     }
+
 
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
         authenticationManager.authenticate(
@@ -57,4 +60,10 @@ public class AuthenticationService {
 
     }
 
+    private void checkIfUserExists(String email) {
+        socialMediaUserRepository.findByEmail(email).ifPresent(user -> {
+            throw new IllegalStateException("User with email " + email + " already exists");
+        });
+
+    }
 }

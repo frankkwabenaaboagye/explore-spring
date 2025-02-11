@@ -42,6 +42,9 @@ public class JwtServiceImpl implements JwtService{
 
     private SecretKey getTheSignInKey() {
 
+        System.out.println("algorithm is  => " + SOCIAL_MEDIA_APP_ALGORITHM);
+        System.out.println("secree key is => " + SOCIAL_MEDIA_APP_SECRET_KEY );
+
         try {
             Mac mac = Mac.getInstance(SOCIAL_MEDIA_APP_ALGORITHM);
             mac.init(
