@@ -1,0 +1,76 @@
+services:
+  postgres:
+    image: postgres
+    container_name: microservicePostgres
+    ports:
+      - 5432:5432   # container port : external port
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+
+  # do not have ultimate version IntelliJ ??
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: microservicePgAdmin
+    ports:
+      - 5050:80  # port 8080 might be used, so we stick with port 5050
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_CONFIG_SERVER_MODE=False
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo
+    container_name: microserviceMongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+    volumes:
+      - mongo:/data
+
+  mongo-express:
+    image: mongo-express
+    container_name: microserviceMongoExpress
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=mongo
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=mongo
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    restart: always
+
+
+  # for notification - mail dev
+  maildev:
+    image: maildev/maildev
+    container_name: microserviceMailDev
+    ports:
+      - 1080:1080  # for the UI
+      - 1025:1025 # for the SMPT server
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+
+networks:
+  microservices-net:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
+  mongo:
