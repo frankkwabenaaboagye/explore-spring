@@ -44,7 +44,14 @@ localhost:8081
 - config server
 ```bash
 @EnableConfigServer
+port: 8888
+config.server.native.search-locations=classpath:/configurations  (under the resources)
 
+
+```
+
+- discovery server
+```bash
 
 
 ```
