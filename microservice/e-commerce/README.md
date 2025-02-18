@@ -52,6 +52,70 @@ config.server.native.search-locations=classpath:/configurations  (under the reso
 
 - discovery server
 ```bash
+dependencies
+Config client -> allows us to connect to the configuration (in the config server) and get them
+
+eureka server -> our discovery server
+
+@EnableEurekaServer
+
+> we have to tell it where it should pick the configuration from 
+> note that our config server is running on port  8888 
+
+
+spring.application.name=discoveryserver  # name is very important
+
+spring.config.import=optional:configserver:http://localhost:8888
 
 
 ```
+
+- configuring the config server
+```bash
+- we made a dir called `configurations` in the config server
+- so we go to the configurations folder and create a file 
+  - with the same name as the (name of the discovery server application name of its app properties)
+  
+  
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/  # the last '/' is very important
+server:
+  port: 8761
+
+```
+
+- test it
+```bash
+go to the url of the discovery server
+ - in this case the http://localhost:8761   : to see the spring eureka UI
+
+```
+
+
+- now we create our microservices
+
+- beginning with `customer`
+```bash
+
+- depedencies
+  - config client, eureka client, web, validation, lombok, mongoDB e.t.c
+  
+create all the configurations for the customer microservice
+- move it to the congfig server
+
+```
+
+
+
+
+
+
+
+
+
