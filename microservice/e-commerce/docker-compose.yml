@@ -20,7 +20,7 @@ services:
     image: dpage/pgadmin4
     container_name: microservicePgAdmin
     ports:
-      - 5050:80  # port 8080 might be used, so we stick with port 5050
+      - 5050:80  # port 8080 might be used, so we stick with port 5050 (local-machine port : container port)
     environment:
       - PGADMIN_DEFAULT_EMAIL=pgadmin@pgadmin.org
       - PGADMIN_DEFAULT_PASSWORD=admin
