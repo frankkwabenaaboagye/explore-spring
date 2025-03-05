@@ -1,6 +1,21 @@
 Spring boot, Spring Cloud and Keycloak
 [https://youtu.be/jdeSV0GRvwI](https://youtu.be/jdeSV0GRvwI)
 
+- structure
+
+```text
+
++----------------+                           +-----------------------------+
+|  config server |                           |   discovery / eureka server |
+|    (8888)      |                           |    (8761)                   |
++----------------+                           +-----------------------------+
+    
+    +----------------+               +----------------+              +----------------+
+    |   customer msc |               |   product msc  |              |   service E    |
+    |    (8090)      |               |    (8084)      |              |    (8085)      |
+    +----------------+               +----------------+              +----------------+
+
+```
 
 
 - spring initializr
@@ -12,6 +27,9 @@ Spring boot, Spring Cloud and Keycloak
   - dependencies
     - config client
     - eureka server
+- microservices
+  - customer
+  - product
 ```
 
 ## The main Dockerfile
@@ -105,6 +123,45 @@ spring.config.import=optional:configserver:http://localhost:8888  # telling it w
   
 create all the configurations for the customer microservice
 - move it to the congfig server
+
+```
+
+- Note:
+- we create the [./services/configserver/src/main/resources/configurations/application.yml](./services/configserver/src/main/resources/configurations/application.yml)
+```bash
+- configuration files inherit from each other
+- there was a bit of configuration we needed to do 
+   | resources/
+        - application.properties
+        - configurations /
+            - application.yml (this is what we are creating for all other configurations to inherit from it)
+            - customer.properties
+            - discoveryserver.yml
+            - product.yml
+            
+so what is in the applications.yml file
+(this is what all other mcs will be using)
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  cloud:
+    config:
+      override-system-properties: false 
+      ( it is true by default ) 
+      ( but we set to false ) 
+      ( because we dont want to override any of the ) 
+      ( properties that set in the respective mcs )
+
+```
+
+- `product`
+```bash
+
 
 ```
 
