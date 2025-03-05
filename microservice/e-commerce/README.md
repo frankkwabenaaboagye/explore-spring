@@ -166,6 +166,10 @@ spring:
 one of the properties used here  is 
 - spring.jpa.hibernate.ddl-auto=validate (we want to rely of flyway to create it for us)
 
+- since we want to validate: we make a script for it (SQL scrip for initialising the db)
+  - proudct mcs
+    - resources/
+      - db.migration/
 
 ```
 
