@@ -12,7 +12,8 @@ Spring boot, Spring Cloud and Keycloak
     
     +----------------+               +----------------+              +----------------+
     |   customer msc |               |   product msc  |              |   service E    |
-    |    (8090)      |               |    (8084)      |              |    (8085)      |
+    |    (8090)      |               |    (8050)      |              |    (8085)      |
+    |   mongodb      |               | postgres-flyway|              |   mongodb      |
     +----------------+               +----------------+              +----------------+
 
 ```
@@ -161,6 +162,9 @@ spring:
 
 - `product`
 ```bash
+
+one of the properties used here  is 
+- spring.jpa.hibernate.ddl-auto=validate (we want to rely of flyway to create it for us)
 
 
 ```
