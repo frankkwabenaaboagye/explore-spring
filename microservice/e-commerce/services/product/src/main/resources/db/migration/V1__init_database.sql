@@ -16,6 +16,6 @@ create table if not exists product
         constraint theFKConstraint references category
 );
 
--- postgres uses sequences so we create it
+-- postgres uses sequences so we create it - default is 50 or?
 create sequence if not exists category_seq increment by 50;
 create sequence if not exists product_seq increment by 50;
