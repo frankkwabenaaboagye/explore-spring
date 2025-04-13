@@ -49,6 +49,20 @@ Rating rating = webClient.get()
 
 // Cloud-native	
 - WebClient + Eureka + @LoadBalanced
+
+Note:
+ - WebClient is in the reactive programming space
+
+
+```
+
+- using webclient
+
+```java
+<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webflux</artifactId>
+</dependency>
 ```
 
  
