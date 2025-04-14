@@ -65,4 +65,14 @@ Note:
 </dependency>
 ```
 
+---
+
+- will be using rest template  - although a traditional way
+
+
+---
+
+
+
+
  

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class MovieCatalogController {
 
     private final RestTemplate restTemplate;
-    private final WebClient.Builder webClientBuilder;
+    // private final WebClient.Builder webClientBuilder;
 
     @GetMapping("/{userId}")
     public List<CatalogItem> getCatalog(@PathVariable String userId) {
@@ -53,7 +53,7 @@ public class MovieCatalogController {
         // TODO: for each movie id call the movie info service and get details
             // we use rest template - (just trying it out)
 
-        /*
+
         return ratings.stream().map(rating -> {
             Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
             return CatalogItem.builder()
@@ -63,10 +63,11 @@ public class MovieCatalogController {
                     .build();
         }).collect(Collectors.toList());
 
-         */
+
 
 
         // using webclient
+        /*
         return ratings.stream().map(rating -> {
             Movie movie = webClientBuilder.build().get()
                     .uri("http://localhost:8082/movies/" + rating.getMovieId())
@@ -79,6 +80,8 @@ public class MovieCatalogController {
                     .rating(rating.getRating())
                     .build();
         }).collect(Collectors.toList());
+        */
+
 
 
 
