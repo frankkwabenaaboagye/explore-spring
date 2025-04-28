@@ -327,3 +327,9 @@ java -Dserver.port=8201 -jar movie-info-service-0.0.1-SNAPSHOT.jar
 
 
 #### What to do when the circuit breaks
+
+![](./images/whattodo.png)
+
+ - the beset option is probably - if you had a cache mechanism
+
+ ![](./images/fallback.png)
