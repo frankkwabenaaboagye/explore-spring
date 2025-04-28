@@ -255,4 +255,75 @@ java -Dserver.port=8201 -jar movie-info-service-0.0.1-SNAPSHOT.jar
 
 
 
-# 
+# Fault tolerance, Resilience
+
+- Fault tolerance
+  - if there is a fault what is the impact of the fault
+- Resilience
+  - how many faults can a system tolerate
+  - can it bounce back?
+
+
+- what are some of the problems with microservices
+  - the instance going down
+    - then "have multiple instances"
+  - the instance being slow (cos of threads)
+    - use timeouts
+
+
+## timeouts
+- first way - simpler
+- the second way is the preferred way
+
+- you can apply it to any service which calls another service
+
+```java
+
+ // rest template
+    @Bean
+    @LoadBalanced
+    public RestTemplate restTemplate() {
+        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+        clientHttpRequestFactory.setConnectTimeout(3000);
+        return new RestTemplate(clientHttpRequestFactory);
+    }
+
+```
+
+- does this solve the problem?
+  - PARTLY
+ - threads still exists on the webserver
+  - how?
+   - if the number of request that are coming in (if that frequeny is > the time it takes to remove / end the thread)
+
+- We move to the idle solution
+    - when you relaise that there is something wrong with a particular microservice, dont even call it!!!
+    - wait for a bit -- try agin -- if it is okay -- fine -- if not -- wait a bit --
+
+- this approach is very common in fault tolerant systems - that is the circuit breaker pattern
+
+![](./images/circuitbreaker.png)
+
+
+- it can be rest (manually or automatically)
+
+- how can we apply it to our microservices
+    - so when should a circuit 'in this sense' break?
+       - you need the logic - what are the parameters for the circuit to break?
+
+- look at this scenario?
+    - one might say, okay -  the last 3 request timed out
+- what if you have request alternating btn succcess and error / timeout?
+  
+![](./images/timeout.png)
+
+
+#### circuit breaker parameters
+
+![](./images/cirsuitbealerparameters.png)
+
+
+- [https://github.com/Netflix/Hystrix/wiki/Configuration](https://github.com/Netflix/Hystrix/wiki/Configuration)
+
+
+#### What to do when the circuit breaks
