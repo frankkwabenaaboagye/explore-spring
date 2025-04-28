@@ -14,6 +14,6 @@ public class Movie {
     private String movieId;
     private String name;
 
-    public static final Movie NULL =  new Movie("0", "N/A");
+    public static final Movie NULL =  new Movie("0", "Nil");
 
 }

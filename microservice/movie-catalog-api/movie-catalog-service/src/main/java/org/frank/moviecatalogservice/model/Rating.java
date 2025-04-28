@@ -14,5 +14,5 @@ public class Rating {
     private int rating;
 
     // as a null rating
-    public static final Rating NULL = new Rating("N/A", 0);
+    public static final Rating NULL = new Rating("Nil", 0);
 }

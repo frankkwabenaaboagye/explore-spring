@@ -156,5 +156,39 @@ http://user:password@localhost:9090/eureka
 eureka.client.service-url.defaultZone=http://server1:9090/eureka,http://server2:9091/eureka
 ```
 
+### how do we consume it?
+- we can say
+ - we will be using rest template to make the call to service discovery, to get the service location
+ - then use the same rest template to make another api call -> using that service location
 
+- BUT rest template has the ability to hide that from us - GOOD!
+
+- we can tell rest template - "I want you to call the service discovery everytime" 
+ - we are doing to give the service name
+
+- use `@LoadBalanced`
+ - it does service discovery in a load balanced way
+
+```java
+@Bean
+@LoadBalanced
+public RestTemplate restTemplate() {
+        return new RestTemplate();
+}
+
+// so now we move from
+restTemplate.getForObject("http://localhost:8083/ratingsdata/users/" + userId, UserRating.class);
+
+// to this
+restTemplate.getForObject("http://ratings-data-service/ratingsdata/users/" + userId, UserRating.class);
+
+// so the rest template is not making the call directly, it is going to the eureka instead
+
+
+// same for this
+restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
+// to
+restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
+
+```
  

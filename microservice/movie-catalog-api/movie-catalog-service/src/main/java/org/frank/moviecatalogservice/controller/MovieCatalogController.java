@@ -27,16 +27,16 @@ public class MovieCatalogController {
 
         // TODO: get all rated movie IDs: we hard code this for  now
 
-        UserRating userRating = restTemplate.getForObject("http://localhost:8083/ratingsdata/users/" + userId, UserRating.class);
+        UserRating userRating = restTemplate.getForObject("http://ratings-data-service/ratingsdata/users/" + userId, UserRating.class);
 
         List<Rating> ratings = userRating.getUserRatings(); // will definitely get it
 
-
+        System.out.println("moving ahead");
         // TODO: for each movie id call the movie info service and get details
             // we use rest template - (just trying it out)
 
         return ratings.stream().map(rating -> {
-            Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
+            Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
             return CatalogItem.builder()
                     .name(movie.getName())
                     .desc("a sample description")
