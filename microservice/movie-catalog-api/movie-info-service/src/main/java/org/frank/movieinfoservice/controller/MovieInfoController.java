@@ -12,6 +12,7 @@ import java.util.Map;
 @RequestMapping("/movies")
 public class MovieInfoController {
 
+    // movie id and the info
     Map<String, String> movieMap = Map.of(
             "tt0111161", "The Shaw shank Redemption",
             "tt0068646", "The Godfather",

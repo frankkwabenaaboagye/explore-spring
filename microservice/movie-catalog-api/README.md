@@ -72,7 +72,27 @@ Note:
 
 ---
 
+- currently
+
+![](./images/so-far.png)
+![](./images/url-hardcode.png)
 
 
+### Service Discovery
+
+- Each of the services registers with the discovery server
+
+![](./images/service-register.png)
+
+- now the discovery server knows where each service is
+
+- a client look for a service 
+   - communuicatin happens btn the client and the discovery servebr
+
+   ![](./images/comm.png)
+
+- now the client knows where the service is and makes the call
+
+![](./images/makescall.png)
 
  

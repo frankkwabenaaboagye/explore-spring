@@ -5,14 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Rating {
-    private String movieId;
-    private int rating;
+public class UserRating {
 
-    // as a null rating
-    public static final Rating NULL = new Rating("N/A", 0);
+    List<Rating> userRatings;
+
+    public static final UserRating NULL = new UserRating(List.of(Rating.NULL));
 }
