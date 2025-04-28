@@ -333,3 +333,23 @@ java -Dserver.port=8201 -jar movie-info-service-0.0.1-SNAPSHOT.jar
  - the beset option is probably - if you had a cache mechanism
 
  ![](./images/fallback.png)
+
+
+
+#### why we need it
+
+![](./images/whybreaker.png)
+
+
+### the pattern
+
+![](./images/thepattern.png)
+
+- its a lot of work when you want to do it yourself
+
+
+- That is where `Hystrix` come in
+
+- but note that the parameters change over time
+
+![](./images/hystrixAdva.png)
