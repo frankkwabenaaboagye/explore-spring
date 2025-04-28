@@ -1,10 +1,12 @@
 package org.frank.moviecatalogservice.controller;
 
+import com.netflix.discovery.DiscoveryClient;
 import lombok.RequiredArgsConstructor;
 import org.frank.moviecatalogservice.model.CatalogItem;
 import org.frank.moviecatalogservice.model.Movie;
 import org.frank.moviecatalogservice.model.Rating;
 import org.frank.moviecatalogservice.model.UserRating;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,8 @@ public class MovieCatalogController {
 
     private final RestTemplate restTemplate;
     // private final WebClient.Builder webClientBuilder;
+
+
 
     @GetMapping("/{userId}")
     public List<CatalogItem> getCatalog(@PathVariable String userId) {

@@ -194,6 +194,11 @@ restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieI
 
 - so standardize / agree on te applicaiton name
 
+
+### case for loadbalanced
+
+![](./images/caseforloadbal.png)
+
 - one of the reasosns for the load balancing
 - the way to see this in action
 - take the jar and run the same application on a different port
@@ -210,4 +215,44 @@ java -Dserver.port=8201 -jar movie-info-service-0.0.1-SNAPSHOT.jar
 ```
 
 ![](./images/testingloadba.png)
+
+- so what happens when a erquest is made to the info-service?
+
+
+- more programmatic control
+
+```java
+
+// just for programmatic control
+    @Autowired
+    private DiscoveryClient discoveryClient;
+```
+
+
+### fault tolerance
+- what if service 2 say, goes down?
+
+![](./images/servicedown.png)
  
+
+- the solution is 
+-  `heart beat`
+  - send heart beat to the service registry
+
+- what eureka client does by default
+ - send ping the eureka server regularly to tell it that 'it is still there'
+
+- what if the eureka server goes down?
+ - it checks the cache
+
+![](./images/serverdown.png)
+
+
+- the above is being handled for us...
+
+---
+---
+
+
+
+# 
