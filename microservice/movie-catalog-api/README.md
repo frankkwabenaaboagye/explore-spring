@@ -80,19 +80,48 @@ Note:
 
 ### Service Discovery
 
-- Each of the services registers with the discovery server
 
-![](./images/service-register.png)
+#### Client Side discovery
 
-- now the discovery server knows where each service is
+  - Each of the services registers with the discovery server
 
-- a client look for a service 
-   - communuicatin happens btn the client and the discovery servebr
+   ![](./images/service-register.png)
 
-   ![](./images/comm.png)
+  - now the discovery server knows where each service is
 
-- now the client knows where the service is and makes the call
+  - a client look for a service 
+    - communuicatin happens btn the client and the discovery servebr
 
-![](./images/makescall.png)
+    ![](./images/comm.png)
+
+  - now the client knows where the service is and makes the call
+
+   ![](./images/makescall.png)
+
+  - this way of communication is very chatty
+
+
+####  Server side discovery
+
+
+  ![](./images/serversidedis.png)
+
+
+
+#### Note
+-  Spring uses client side discovery
+- Technology to implement service discovery - `Eureka`
+
+![](./images/eurekacns.png)
+
+- making it work
+![](./images/makingitwork.png)
+
+- Eureka server
+  - spring boot application + 
+  - eureka server dependency
+  - `@EnableEurekaServer`
+  - using port: 8761
+
 
  
