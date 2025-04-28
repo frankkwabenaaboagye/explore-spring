@@ -123,5 +123,38 @@ Note:
   - `@EnableEurekaServer`
   - using port: 8761
 
+- to prevent the eureka server from registering with itself:
+
+```java
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+```
+- note: we can also have mutiple instances of eureka servers just as we have multiple instances of eureka clients
+- every eureka server is also a eureka client
+
+
+### add the eureka client dependency to the other micsroservices
+```java
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+
+```
+
+- if you are running eureka server not on the default port
+ - the you have to specify that in the clients property file
+
+```java
+# Tell the client where the Eureka Server is
+eureka.client.service-url.defaultZone=http://localhost:PORT/eureka
+
+# if username and password
+http://user:password@localhost:9090/eureka
+
+#  multiple Eureka servers
+eureka.client.service-url.defaultZone=http://server1:9090/eureka,http://server2:9091/eureka
+```
+
 
  
