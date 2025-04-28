@@ -34,7 +34,7 @@ public class MovieInfoController {
                 .stream()
                 .filter(entry -> entry.getKey().equals(movieId))
                 .findFirst()
-                .map(entry -> Movie.builder()
+                .map((Map.Entry<String, String> entry) -> Movie.builder()
                         .movieId(entry.getKey())
                         .name(entry.getValue())
                         .build()

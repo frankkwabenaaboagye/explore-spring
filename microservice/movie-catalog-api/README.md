@@ -191,4 +191,23 @@ restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(),
 restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
 
 ```
+
+- so standardize / agree on te applicaiton name
+
+- one of the reasosns for the load balancing
+- the way to see this in action
+- take the jar and run the same application on a different port
+
+- say the movie info service
+
+```java
+it is running on port 8082
+
+// i have it jar file too started on in a different directory, different port
+
+java -Dserver.port=8201 -jar movie-info-service-0.0.1-SNAPSHOT.jar
+
+```
+
+![](./images/testingloadba.png)
  
